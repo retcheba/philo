@@ -1,7 +1,7 @@
 SRCS		= main.c philo.c philo_utils.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
 CC			= gcc
-CFLAGS		= -g -Wall -Wextra -Werror 
+CFLAGS		= -g -pthread -Wall -Wextra -Werror 
 NAME		= philo
 RM			= rm -f
 
