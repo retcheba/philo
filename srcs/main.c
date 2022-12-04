@@ -43,6 +43,8 @@ int	main(int argc, char **argv)
 			philo.number_of_times_each_philosopher_must_eat = -1;
 		if (is_wrong_arguments(&philo))
 			printf("Error: Wrong arguments\n");
+		else
+			ft_philo(&philo);
 	}
 	else
 		printf("Error: Wrong number of arguments\n");

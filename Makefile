@@ -1,4 +1,4 @@
-SRCS		= main.c philo_utils.c
+SRCS		= main.c philo.c philo_utils.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
 CC			= gcc
 CFLAGS		= -g -Wall -Wextra -Werror 

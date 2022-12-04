@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 12:36:52 by retcheba          #+#    #+#             */
-/*   Updated: 2022/12/04 12:36:54 by retcheba         ###   ########.fr       */
+/*   Created: 2022/12/04 13:55:10 by retcheba          #+#    #+#             */
+/*   Updated: 2022/12/04 13:55:14 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdio.h>
-
-typedef struct s_philo
+void	ft_philo(t_philo *philo)
 {
-	size_t	number_of_philosophers;
-	size_t	time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
-	size_t	number_of_times_each_philosopher_must_eat;
-}	t_philo;
-
-void	ft_philo(t_philo *philo);
-size_t	ft_atoi(const char *num);
-
-#endif
+	printf("number_of_philosophers=%ld\n", philo->number_of_philosophers);
+	printf("time_to_die=%ld\n", philo->time_to_die);
+	printf("time_to_eat=%ld\n", philo->time_to_eat);
+	printf("time_to_sleep=%ld\n", philo->time_to_sleep);
+	printf("number_of_times_each_philosopher_must_eat=%ld\n", \
+		philo->number_of_times_each_philosopher_must_eat);
+}
