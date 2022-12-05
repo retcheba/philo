@@ -10,28 +10,48 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
-void	*routine()
+void	*routine(void *arg)
 {
-	printf("Test from threads\n");
-	sleep(2);
-	printf("Ending thread\n");
+	t_thread *thread;
+
+	thread = (t_thread *)arg;
+	for (int i = 0; i < 1000000; i++)
+	{
+		pthread_mutex_lock(&thread->mutex);
+		thread->mails++;
+		pthread_mutex_unlock(&thread->mutex);
+	}
 	return (NULL);
 }
 
 void	init_threads(t_philo *philo)
 {
+	pthread_t	t1, t2, t3, t4;
+	t_thread	thread;
+
 	(void)philo;
-	pthread_t	t1, t2;
-	if (pthread_create(&t1, NULL, &routine, NULL) != 0)
+	thread.mails = 0;
+	pthread_mutex_init(&thread.mutex, NULL);
+	if (pthread_create(&t1, NULL, &routine, &thread) != 0)
 		return ;
-	if (pthread_create(&t2, NULL, &routine, NULL) != 0)
+	if (pthread_create(&t2, NULL, &routine, &thread) != 0)
+		return ;
+	if (pthread_create(&t3, NULL, &routine, &thread) != 0)
+		return ;
+	if (pthread_create(&t4, NULL, &routine, &thread) != 0)
 		return ;
 	if (pthread_join(t1, NULL) != 0)
 		return ;
 	if (pthread_join(t2, NULL) != 0)
 		return ;
+	if (pthread_join(t3, NULL) != 0)
+		return ;
+	if (pthread_join(t4, NULL) != 0)
+		return ;
+	pthread_mutex_destroy(&thread.mutex);
+	printf("Number of mails=%d\n", thread.mails);
 }
 
 void	ft_philo(t_philo *philo)

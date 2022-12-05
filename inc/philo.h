@@ -26,7 +26,13 @@ typedef struct s_philo
 	size_t	number_of_times_each_philosopher_must_eat;
 }	t_philo;
 
-void	ft_philo(t_philo *philo);
+typedef struct s_thread
+{
+	int				mails;
+	pthread_mutex_t	mutex;
+}	t_thread;
+
 size_t	ft_atoi(const char *num);
+void	ft_philo(t_philo *philo);
 
 #endif

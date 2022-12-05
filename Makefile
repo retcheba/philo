@@ -1,13 +1,16 @@
 SRCS		= main.c philo.c philo_utils.c
-OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
+SRC			= $(addprefix src/, $(SRCS))
+OBJS		= $(SRC:src/%.c=obj/%.o)
+D_OBJS		= mkdir -p $(@D)
 CC			= gcc
-CFLAGS		= -g -pthread -Wall -Wextra -Werror 
+CFLAGS		= -g -pthread -Wall -Wextra -Werror
 NAME		= philo
-RM			= rm -f
+RM			= rm -rf
 
 all:		$(NAME)
 
-%.o: %.c
+obj/%.o: src/%.c	
+			@$(D_OBJS)
 			@$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME): 	$(OBJS)
@@ -19,7 +22,7 @@ $(NAME): 	$(OBJS)
 			@echo "\033[1;92m# ************************ #\033[0m"
 
 clean:
-			@$(RM) $(OBJS)
+			@$(RM) $(OBJ_DIR)
 			@echo "\033[1;93m# ************************ #\033[0m"
 			@echo "\033[1;93m#                          #\033[0m"
 			@echo "\033[1;93m#   make clean completed   #\033[0m"
