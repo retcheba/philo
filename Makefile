@@ -1,15 +1,17 @@
+SRC_DIR		= src
+OBJ_DIR		= obj
 SRCS		= main.c philo.c philo_utils.c
 SRC			= $(addprefix src/, $(SRCS))
-OBJS		= $(SRC:src/%.c=obj/%.o)
+OBJS		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 D_OBJS		= mkdir -p $(@D)
 CC			= gcc
-CFLAGS		= -g -pthread -Wall -Wextra -Werror
+CFLAGS		= -g -pthread -Wall -Wextra -Werror 
 NAME		= philo
 RM			= rm -rf
 
 all:		$(NAME)
 
-obj/%.o: src/%.c	
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c	
 			@$(D_OBJS)
 			@$(CC) $(CFLAGS) -c -o $@ $<
 
