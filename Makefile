@@ -4,7 +4,7 @@ SRCS		= main.c philo.c philo_utils.c
 SRC			= $(addprefix src/, $(SRCS))
 OBJS		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 D_OBJS		= mkdir -p $(@D)
-CC			= gcc
+CC			= clang
 CFLAGS		= -g -pthread -Wall -Wextra -Werror 
 NAME		= philo
 RM			= rm -rf

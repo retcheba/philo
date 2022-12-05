@@ -17,41 +17,41 @@ void	*routine(void *arg)
 	t_thread *thread;
 
 	thread = (t_thread *)arg;
-	for (int i = 0; i < 1000000; i++)
-	{
-		pthread_mutex_lock(&thread->mutex);
-		thread->mails++;
-		pthread_mutex_unlock(&thread->mutex);
-	}
+	pthread_mutex_lock(&thread->mutex);
+	printf("I am philo number %d\n", thread->philo);
+	pthread_mutex_unlock(&thread->mutex);
 	return (NULL);
 }
 
 void	init_threads(t_philo *philo)
 {
-	pthread_t	t1, t2, t3, t4;
-	t_thread	thread;
+	pthread_t	*th;
+	t_struct	structs;
+	size_t		i;
 
 	(void)philo;
-	thread.mails = 0;
-	pthread_mutex_init(&thread.mutex, NULL);
-	if (pthread_create(&t1, NULL, &routine, &thread) != 0)
-		return ;
-	if (pthread_create(&t2, NULL, &routine, &thread) != 0)
-		return ;
-	if (pthread_create(&t3, NULL, &routine, &thread) != 0)
-		return ;
-	if (pthread_create(&t4, NULL, &routine, &thread) != 0)
-		return ;
-	if (pthread_join(t1, NULL) != 0)
-		return ;
-	if (pthread_join(t2, NULL) != 0)
-		return ;
-	if (pthread_join(t3, NULL) != 0)
-		return ;
-	if (pthread_join(t4, NULL) != 0)
-		return ;
-	pthread_mutex_destroy(&thread.mutex);
-	printf("Number of mails=%d\n", thread.mails);
+	th = malloc(sizeof(pthread_t) * philo->number_of_philosophers);
+	structs.threads = malloc(sizeof(t_thread) * philo->number_of_philosophers);
+	i = 0;
+	while (i < philo->number_of_philosophers)
+	{
+		pthread_mutex_init(&structs.threads[i].mutex, NULL);
+		structs.threads[i].philo = i;
+		if (pthread_create(&th[i], NULL, &routine, &structs.threads[i]) != 0)
+		{
+			perror("Failed to create thread\n");
+			return ;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < philo->number_of_philosophers)
+	{
+		if (pthread_join(th[i], NULL) != 0)
+			return ;
+		pthread_mutex_destroy(&structs.threads[i].mutex);
+		i++;
+	}
 }
 
 void	ft_philo(t_philo *philo)

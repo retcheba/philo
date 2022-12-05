@@ -13,6 +13,7 @@
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
 # include <unistd.h>
@@ -28,9 +29,14 @@ typedef struct s_philo
 
 typedef struct s_thread
 {
-	int				mails;
+	int				philo;
 	pthread_mutex_t	mutex;
 }	t_thread;
+
+typedef struct s_struct
+{
+	t_thread	*threads;
+}	t_struct;
 
 size_t	ft_atoi(const char *num);
 void	ft_philo(t_philo *philo);
