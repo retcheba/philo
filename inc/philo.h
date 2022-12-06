@@ -30,12 +30,15 @@ typedef struct s_philo
 typedef struct s_thread
 {
 	int				philo;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	is_eating;
 }	t_thread;
 
 typedef struct s_struct
 {
 	t_thread	*threads;
+	pthread_mutex_t	*forks;
 }	t_struct;
 
 size_t	ft_atoi(const char *num);
