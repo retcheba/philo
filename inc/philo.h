@@ -18,28 +18,28 @@
 # include <pthread.h>
 # include <unistd.h>
 
-typedef struct s_philo
-{
-	size_t	number_of_philosophers;
-	size_t	time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
-	size_t	number_of_times_each_philosopher_must_eat;
-}	t_philo;
+typedef struct s_thread	t_thread;
+typedef struct s_philo	t_philo;
 
-typedef struct s_thread
+struct s_thread
 {
 	int				philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	is_eating;
-}	t_thread;
+	t_philo			*philo_struct;
+};
 
-typedef struct s_struct
+struct s_philo
 {
-	t_thread	*threads;
+	size_t			number_of_philosophers;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			number_of_times_each_philosopher_must_eat;
+	t_thread		*threads;
 	pthread_mutex_t	*forks;
-}	t_struct;
+	pthread_mutex_t	printf;
+};
 
 size_t	ft_atoi(const char *num);
 void	ft_philo(t_philo *philo);

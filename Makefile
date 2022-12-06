@@ -5,7 +5,7 @@ SRC			= $(addprefix src/, $(SRCS))
 OBJS		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 D_OBJS		= mkdir -p $(@D)
 CC			= clang
-CFLAGS		= -g -pthread -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS		= -g -pthread -Wall -Wextra -Werror #-fsanitize=thread
 NAME		= philo
 RM			= rm -rf
 
