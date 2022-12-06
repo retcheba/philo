@@ -14,7 +14,7 @@
 
 static void	init_mutex(t_philo *philo)
 {
-	size_t		i;
+	int	i;
 
 	philo->forks = malloc(sizeof(pthread_mutex_t) * philo->number_of_philosophers);
 	i = 0;
@@ -28,7 +28,7 @@ static void	init_mutex(t_philo *philo)
 
 static void	destroy_mutex(t_philo *philo)
 {
-	size_t		i;
+	int	i;
 
 	i = 0;
 	while (i < philo->number_of_philosophers)
@@ -36,33 +36,77 @@ static void	destroy_mutex(t_philo *philo)
 		pthread_mutex_destroy(&philo->forks[i]);
 		i++;
 	}
+	free(philo->forks);
 	pthread_mutex_destroy(&philo->printf);
 }
 
-void	*routine(void *arg)
+static void	*routine_endless(void *arg)
 {
 	t_thread *thread;
 
 	thread = (t_thread *)arg;
-	if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+	while (1 == 1)
 	{
-		if (pthread_mutex_lock(thread->left_fork) == 0)
-			printf("Philo %d takes his fork\n", thread->philo);
-		if (pthread_mutex_lock(thread->right_fork) == 0)
-			printf("Philo %d takes fork of philo %d\n", thread->philo, thread->philo + 1);
-		printf("Philo %d is eating\n", thread->philo);
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+			printf("Philo %d is thinking\n", thread->philo);
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+		{
+			if (pthread_mutex_lock(thread->left_fork) == 0)
+				printf("Philo %d has taken a fork\n", thread->philo);
+			if (pthread_mutex_lock(thread->right_fork) == 0)
+				printf("Philo %d has taken a fork\n", thread->philo);
+			printf("Philo %d is eating\n", thread->philo);
+		}
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		usleep(1000 * thread->philo_struct->time_to_eat);
+		pthread_mutex_unlock(thread->left_fork);
+		pthread_mutex_unlock(thread->right_fork);
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+			printf("Philo %d is sleeping\n", thread->philo);
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		usleep(1000 * thread->philo_struct->time_to_sleep);
 	}
-	usleep(1000 * thread->philo_struct->time_to_eat);
-	pthread_mutex_unlock(thread->left_fork);
-	pthread_mutex_unlock(thread->right_fork);
-	pthread_mutex_unlock(&thread->philo_struct->printf);
+	return (NULL);
+}
+
+static void	*routine_defined_end(void *arg)
+{
+	t_thread	*thread;
+	int			i;
+
+	thread = (t_thread *)arg;
+	i = 0;
+	while (i < thread->philo_struct->number_of_times_each_philosopher_must_eat)
+	{
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+			printf("Philo %d is thinking\n", thread->philo);
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+		{
+			if (pthread_mutex_lock(thread->left_fork) == 0)
+				printf("Philo %d has taken a fork\n", thread->philo);
+			if (pthread_mutex_lock(thread->right_fork) == 0)
+				printf("Philo %d has taken a fork\n", thread->philo);
+			printf("Philo %d is eating\n", thread->philo);
+		}
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		usleep(1000 * thread->philo_struct->time_to_eat);
+		pthread_mutex_unlock(thread->left_fork);
+		pthread_mutex_unlock(thread->right_fork);
+		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+			printf("Philo %d is sleeping\n", thread->philo);
+		pthread_mutex_unlock(&thread->philo_struct->printf);
+		usleep(1000 * thread->philo_struct->time_to_sleep);
+		i++;
+	}
 	return (NULL);
 }
 
 void	init_threads(t_philo *philo)
 {
 	pthread_t	*th;
-	size_t		i;
+	int			i;
 
 	(void)philo;
 	th = malloc(sizeof(pthread_t) * philo->number_of_philosophers);
@@ -78,10 +122,21 @@ void	init_threads(t_philo *philo)
 		else
 			philo->threads[i].right_fork = &philo->forks[i + 1];
 		philo->threads[i].philo_struct = philo;
-		if (pthread_create(&th[i], NULL, &routine, &philo->threads[i]) != 0)
+		if (philo->number_of_times_each_philosopher_must_eat == -1)
 		{
-			perror("Failed to create thread\n");
-			return ;
+			if (pthread_create(&th[i], NULL, &routine_endless, &philo->threads[i]) != 0)
+			{
+				perror("Failed to create thread\n");
+				return ;
+			}
+		}
+		else
+		{
+			if (pthread_create(&th[i], NULL, &routine_defined_end, &philo->threads[i]) != 0)
+			{
+				perror("Failed to create thread\n");
+				return ;
+			}
 		}
 		i++;
 	}
@@ -93,15 +148,17 @@ void	init_threads(t_philo *philo)
 		i++;
 	}
 	destroy_mutex(philo);
+	free(th);
+	free(philo->threads);
 }
 
 void	ft_philo(t_philo *philo)
 {
-	printf("number_of_philosophers=%ld\n", philo->number_of_philosophers);
-	printf("time_to_die=%ld\n", philo->time_to_die);
-	printf("time_to_eat=%ld\n", philo->time_to_eat);
-	printf("time_to_sleep=%ld\n", philo->time_to_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%ld\n\n", \
+	printf("number_of_philosophers=%d\n", philo->number_of_philosophers);
+	printf("time_to_die=%d\n", philo->time_to_die);
+	printf("time_to_eat=%d\n", philo->time_to_eat);
+	printf("time_to_sleep=%d\n", philo->time_to_sleep);
+	printf("number_of_times_each_philosopher_must_eat=%d\n\n", \
 		philo->number_of_times_each_philosopher_must_eat);
 	init_threads(philo);
 }

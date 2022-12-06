@@ -12,10 +12,10 @@
 
 #include "../inc/philo.h"
 
-size_t	ft_atoi(const char *num)
+int	ft_atoi(const char *num)
 {
-	size_t	result;
-	size_t	i;
+	int	result;
+	int	i;
 
 	result = 0;
 	i = 0;

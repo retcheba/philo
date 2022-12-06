@@ -31,17 +31,17 @@ struct s_thread
 
 struct s_philo
 {
-	size_t			number_of_philosophers;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			number_of_times_each_philosopher_must_eat;
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
 	t_thread		*threads;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	printf;
 };
 
-size_t	ft_atoi(const char *num);
+int		ft_atoi(const char *num);
 void	ft_philo(t_philo *philo);
 
 #endif
