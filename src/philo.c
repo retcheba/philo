@@ -19,7 +19,7 @@ static void	create_threads(t_philo *philo, pthread_t *th, int i)
 		if (pthread_create(&th[i], NULL, &routine_endless, \
 			&philo->threads[i]) != 0)
 		{
-			perror("Failed to create thread\n");
+			printf("Failed to create thread\n");
 			return ;
 		}
 	}
@@ -28,7 +28,7 @@ static void	create_threads(t_philo *philo, pthread_t *th, int i)
 		if (pthread_create(&th[i], NULL, &routine_defined_end, \
 			&philo->threads[i]) != 0)
 		{
-			perror("Failed to create thread\n");
+			printf("Failed to create thread\n");
 			return ;
 		}
 	}
