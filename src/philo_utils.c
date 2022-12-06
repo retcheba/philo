@@ -34,3 +34,39 @@ int	ft_atoi(const char *num)
 	}
 	return (result);
 }
+
+void	init_mutex(t_philo *philo)
+{
+	int	i;
+
+	philo->forks = malloc(sizeof(pthread_mutex_t) \
+		* philo->number_of_philosophers);
+	i = 0;
+	while (i < philo->number_of_philosophers)
+	{
+		pthread_mutex_init(&philo->forks[i], NULL);
+		i++;
+	}
+	pthread_mutex_init(&philo->printf, NULL);
+}
+
+void	destroy_mutex(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->number_of_philosophers)
+	{
+		pthread_mutex_destroy(&philo->forks[i]);
+		i++;
+	}
+	free(philo->forks);
+	pthread_mutex_destroy(&philo->printf);
+}
+
+void	print_status(t_thread *thread, char	*status)
+{
+	if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
+		printf("Philo %d %s\n", thread->philo, status);
+	pthread_mutex_unlock(&thread->philo_struct->printf);
+}

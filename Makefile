@@ -1,11 +1,11 @@
 SRC_DIR		= src
 OBJ_DIR		= obj
-SRCS		= main.c philo.c philo_utils.c
+SRCS		= main.c philo.c philo_utils.c routine.c
 SRC			= $(addprefix src/, $(SRCS))
 OBJS		= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 D_OBJS		= mkdir -p $(@D)
 CC			= clang
-CFLAGS		= -g -pthread -Wall -Wextra -Werror #-fsanitize=thread
+CFLAGS		= -g -pthread -Wall -Wextra -Werror
 NAME		= philo
 RM			= rm -rf
 

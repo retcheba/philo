@@ -43,5 +43,10 @@ struct s_philo
 
 int		ft_atoi(const char *num);
 void	ft_philo(t_philo *philo);
+void	init_mutex(t_philo *philo);
+void	destroy_mutex(t_philo *philo);
+void	print_status(t_thread *thread, char	*status);
+void	*routine_endless(void *arg);
+void	*routine_defined_end(void *arg);
 
 #endif
