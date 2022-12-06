@@ -52,7 +52,7 @@ void	*routine(void *arg)
 			printf("Philo %d takes fork of philo %d\n", thread->philo, thread->philo + 1);
 		printf("Philo %d is eating\n", thread->philo);
 	}
-	usleep(2000);
+	usleep(1000 * thread->philo_struct->time_to_eat);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
 	pthread_mutex_unlock(&thread->philo_struct->printf);
