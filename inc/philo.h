@@ -25,6 +25,7 @@ typedef struct s_philo	t_philo;
 struct s_thread
 {
 	int				philo;
+	int				i;
 	long long		last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -37,7 +38,7 @@ struct s_philo
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int				number_of_times_each_philo_must_eat;
 	int				number_of_philo_fat;
 	int				death;
 	int				death_philo;
@@ -48,6 +49,8 @@ struct s_philo
 	pthread_mutex_t	printf;
 	pthread_mutex_t	philo_fat;
 	pthread_mutex_t	philo_death;
+	pthread_mutex_t	time_start;
+	pthread_mutex_t	to_die_time;
 };
 
 int			ft_atoi(const char *num);
@@ -57,7 +60,6 @@ void		destroy_mutex(t_philo *philo);
 void		print_status(t_thread *thread, char	*status, int color);
 int			is_a_dead_philo(t_thread *thread);
 int			is_only_one_philo(t_thread *thread);
-//void		print_death(t_thread *thread, long long time);
 void		set_death(t_thread *thread, long long time);
 void		*routine_endless(void *arg);
 void		*routine_defined_end(void *arg);

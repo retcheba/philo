@@ -14,7 +14,7 @@
 
 static void	create_threads(t_philo *philo, pthread_t *th, int i)
 {
-	if (philo->number_of_times_each_philosopher_must_eat == -1)
+	if (philo->number_of_times_each_philo_must_eat == -1)
 	{
 		if (pthread_create(&th[i], NULL, &routine_endless, \
 			&philo->threads[i]) != 0)
@@ -49,7 +49,8 @@ static void	join_threads(t_philo *philo, pthread_t *th)
 
 static void	init_threads(t_philo *philo, int i)
 {
-	philo->threads[i].philo = i;
+	philo->threads[i].philo = i + 1;
+	philo->threads[i].i = 0;
 	philo->threads[i].last_meal = 0;
 	philo->threads[i].left_fork = &philo->forks[i];
 	if (i + 1 == philo->number_of_philosophers)
@@ -87,12 +88,6 @@ static void	init_philo(t_philo *philo)
 
 void	ft_philo(t_philo *philo)
 {
-	printf("number_of_philosophers=%d\n", philo->number_of_philosophers);
-	printf("time_to_die=%d\n", philo->time_to_die);
-	printf("time_to_eat=%d\n", philo->time_to_eat);
-	printf("time_to_sleep=%d\n", philo->time_to_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n\n", \
-		philo->number_of_times_each_philosopher_must_eat);
 	philo->number_of_philo_fat = 0;
 	philo->death = 0;
 	init_philo(philo);

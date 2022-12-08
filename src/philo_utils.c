@@ -50,6 +50,8 @@ void	init_mutex(t_philo *philo)
 	pthread_mutex_init(&philo->printf, NULL);
 	pthread_mutex_init(&philo->philo_fat, NULL);
 	pthread_mutex_init(&philo->philo_death, NULL);
+	pthread_mutex_init(&philo->time_start, NULL);
+	pthread_mutex_init(&philo->to_die_time, NULL);
 }
 
 void	destroy_mutex(t_philo *philo)
@@ -66,6 +68,8 @@ void	destroy_mutex(t_philo *philo)
 	pthread_mutex_destroy(&philo->printf);
 	pthread_mutex_destroy(&philo->philo_fat);
 	pthread_mutex_destroy(&philo->philo_death);
+	pthread_mutex_destroy(&philo->time_start);
+	pthread_mutex_destroy(&philo->to_die_time);
 }
 
 long long	get_time(void)
