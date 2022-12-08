@@ -17,11 +17,14 @@ void	*routine_endless(void *arg)
 	t_thread	*thread;
 
 	thread = (t_thread *)arg;
+	thread->last_meal = 0;
 	while (1 == 1)
 	{
 		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
+		if (is_only_one_philo(thread))
+			break ;
 		if (pthread_mutex_lock(thread->right_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
 		print_status(thread, "is eating", 92);
@@ -30,6 +33,8 @@ void	*routine_endless(void *arg)
 		pthread_mutex_unlock(thread->right_fork);
 		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
+		if (is_a_dead_philo(thread))
+			break ;
 	}
 	return (NULL);
 }
@@ -71,6 +76,8 @@ void	*routine_defined_end(void *arg)
 		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
+		if (is_only_one_philo(thread))
+			break ;
 		if (pthread_mutex_lock(thread->right_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
 		print_status(thread, "is eating", 92);
@@ -81,7 +88,7 @@ void	*routine_defined_end(void *arg)
 		usleep(1000 * thread->philo_struct->time_to_sleep);
 		i++;
 		check_if_the_philo_is_fat(thread, i);
-		if (all_the_philo_are_fat(thread))
+		if (all_the_philo_are_fat(thread) || is_a_dead_philo(thread))
 			break ;
 	}
 	return (NULL);

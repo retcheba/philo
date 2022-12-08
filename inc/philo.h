@@ -25,6 +25,7 @@ typedef struct s_philo	t_philo;
 struct s_thread
 {
 	int				philo;
+	long long		last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_philo			*philo_struct;
@@ -38,11 +39,13 @@ struct s_philo
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
 	int				number_of_philo_fat;
+	int				death;
 	long long		start_time;
 	t_thread		*threads;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	printf;
 	pthread_mutex_t	philo_fat;
+	pthread_mutex_t	philo_death;
 };
 
 int			ft_atoi(const char *num);
@@ -50,6 +53,9 @@ void		ft_philo(t_philo *philo);
 void		init_mutex(t_philo *philo);
 void		destroy_mutex(t_philo *philo);
 void		print_status(t_thread *thread, char	*status, int color);
+int			is_a_dead_philo(t_thread *thread);
+int			is_only_one_philo(t_thread *thread);
+void		print_death(t_thread *thread, long long time);
 void		*routine_endless(void *arg);
 void		*routine_defined_end(void *arg);
 long long	get_time(void);

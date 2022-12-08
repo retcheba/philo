@@ -61,6 +61,7 @@ void	init_threads(t_philo *philo)
 	while (i < philo->number_of_philosophers)
 	{
 		philo->threads[i].philo = i;
+		philo->threads[i].last_meal = 0;
 		philo->threads[i].left_fork = &philo->forks[i];
 		if (i + 1 == philo->number_of_philosophers)
 			philo->threads[i].right_fork = &philo->forks[i - 1];
@@ -85,5 +86,6 @@ void	ft_philo(t_philo *philo)
 	printf("number_of_times_each_philosopher_must_eat=%d\n\n", \
 		philo->number_of_times_each_philosopher_must_eat);
 	philo->number_of_philo_fat = 0;
+	philo->death = 0;
 	init_threads(philo);
 }
