@@ -68,29 +68,6 @@ void	destroy_mutex(t_philo *philo)
 	pthread_mutex_destroy(&philo->philo_death);
 }
 
-void	print_status(t_thread *thread, char	*status, int color)
-{
-	long long	time;
-
-	if (thread->philo_struct->death != 1)
-	{
-		time = get_time() - thread->philo_struct->start_time;
-		if (color == 92)
-		{
-			if (time - thread->last_meal > thread->philo_struct->time_to_die)
-			{
-				print_death(thread, time);
-				return ;
-			}
-			thread->last_meal = time;
-		}
-		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
-			printf("\033[%dm%lld %d %s\n\033[0m", color, time, thread->philo, \
-				status);
-		pthread_mutex_unlock(&thread->philo_struct->printf);
-	}
-}
-
 long long	get_time(void)
 {
 	struct timeval	tv;

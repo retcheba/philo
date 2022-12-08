@@ -47,7 +47,19 @@ static void	join_threads(t_philo *philo, pthread_t *th)
 	}
 }
 
-void	init_threads(t_philo *philo)
+static void	init_threads(t_philo *philo, int i)
+{
+	philo->threads[i].philo = i;
+	philo->threads[i].last_meal = 0;
+	philo->threads[i].left_fork = &philo->forks[i];
+	if (i + 1 == philo->number_of_philosophers)
+		philo->threads[i].right_fork = &philo->forks[i - 1];
+	else
+		philo->threads[i].right_fork = &philo->forks[i + 1];
+	philo->threads[i].philo_struct = philo;
+}
+
+static void	init_philo(t_philo *philo)
 {
 	pthread_t	*th;
 	int			i;
@@ -60,18 +72,14 @@ void	init_threads(t_philo *philo)
 	i = 0;
 	while (i < philo->number_of_philosophers)
 	{
-		philo->threads[i].philo = i;
-		philo->threads[i].last_meal = 0;
-		philo->threads[i].left_fork = &philo->forks[i];
-		if (i + 1 == philo->number_of_philosophers)
-			philo->threads[i].right_fork = &philo->forks[i - 1];
-		else
-			philo->threads[i].right_fork = &philo->forks[i + 1];
-		philo->threads[i].philo_struct = philo;
+		init_threads(philo, i);
 		create_threads(philo, th, i);
 		i++;
 	}
 	join_threads(philo, th);
+	if (philo->death == 1)
+		printf("\033[91m%lld %d died\n\033[0m", philo->death_time, \
+			philo->death_philo);
 	destroy_mutex(philo);
 	free(th);
 	free(philo->threads);
@@ -87,5 +95,5 @@ void	ft_philo(t_philo *philo)
 		philo->number_of_times_each_philosopher_must_eat);
 	philo->number_of_philo_fat = 0;
 	philo->death = 0;
-	init_threads(philo);
+	init_philo(philo);
 }

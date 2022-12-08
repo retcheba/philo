@@ -39,9 +39,10 @@ void	*routine_endless(void *arg)
 	return (NULL);
 }
 
-static void	check_if_the_philo_is_fat(t_thread	*thread, int i)
+static void	check_if_the_philo_is_fat(t_thread	*thread, int *i)
 {
-	if (i == thread->philo_struct->number_of_times_each_philosopher_must_eat)
+	*i += 1;
+	if (*i == thread->philo_struct->number_of_times_each_philosopher_must_eat)
 	{
 		if (pthread_mutex_lock(&thread->philo_struct->philo_fat) == 0)
 			thread->philo_struct->number_of_philo_fat++;
@@ -86,8 +87,7 @@ void	*routine_defined_end(void *arg)
 		pthread_mutex_unlock(thread->right_fork);
 		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
-		i++;
-		check_if_the_philo_is_fat(thread, i);
+		check_if_the_philo_is_fat(thread, &i);
 		if (all_the_philo_are_fat(thread) || is_a_dead_philo(thread))
 			break ;
 	}
