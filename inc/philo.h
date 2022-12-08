@@ -37,10 +37,12 @@ struct s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
+	int				number_of_philo_fat;
 	long long		start_time;
 	t_thread		*threads;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	printf;
+	pthread_mutex_t	philo_fat;
 };
 
 int			ft_atoi(const char *num);

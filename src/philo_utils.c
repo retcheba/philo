@@ -48,6 +48,7 @@ void	init_mutex(t_philo *philo)
 		i++;
 	}
 	pthread_mutex_init(&philo->printf, NULL);
+	pthread_mutex_init(&philo->philo_fat, NULL);
 }
 
 void	destroy_mutex(t_philo *philo)
@@ -62,6 +63,7 @@ void	destroy_mutex(t_philo *philo)
 	}
 	free(philo->forks);
 	pthread_mutex_destroy(&philo->printf);
+	pthread_mutex_destroy(&philo->philo_fat);
 }
 
 void	print_status(t_thread *thread, char	*status, int color)

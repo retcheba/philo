@@ -34,6 +34,31 @@ void	*routine_endless(void *arg)
 	return (NULL);
 }
 
+static void	check_if_the_philo_is_fat(t_thread	*thread, int i)
+{
+	if (i == thread->philo_struct->number_of_times_each_philosopher_must_eat)
+	{
+		if (pthread_mutex_lock(&thread->philo_struct->philo_fat) == 0)
+			thread->philo_struct->number_of_philo_fat++;
+		pthread_mutex_unlock(&thread->philo_struct->philo_fat);
+	}
+}
+
+static int	all_the_philo_are_fat(t_thread	*thread)
+{
+	if (pthread_mutex_lock(&thread->philo_struct->philo_fat) == 0)
+	{
+		if (thread->philo_struct->number_of_philo_fat >= \
+			thread->philo_struct->number_of_philosophers)
+		{
+			pthread_mutex_unlock(&thread->philo_struct->philo_fat);
+			return (1);
+		}
+	}
+	pthread_mutex_unlock(&thread->philo_struct->philo_fat);
+	return (0);
+}
+
 void	*routine_defined_end(void *arg)
 {
 	t_thread	*thread;
@@ -41,7 +66,7 @@ void	*routine_defined_end(void *arg)
 
 	thread = (t_thread *)arg;
 	i = 0;
-	while (i < thread->philo_struct->number_of_times_each_philosopher_must_eat)
+	while (1 == 1)
 	{
 		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
@@ -55,6 +80,9 @@ void	*routine_defined_end(void *arg)
 		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
 		i++;
+		check_if_the_philo_is_fat(thread, i);
+		if (all_the_philo_are_fat(thread))
+			break ;
 	}
 	return (NULL);
 }

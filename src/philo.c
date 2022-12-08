@@ -84,5 +84,6 @@ void	ft_philo(t_philo *philo)
 	printf("time_to_sleep=%d\n", philo->time_to_sleep);
 	printf("number_of_times_each_philosopher_must_eat=%d\n\n", \
 		philo->number_of_times_each_philosopher_must_eat);
+	philo->number_of_philo_fat = 0;
 	init_threads(philo);
 }
