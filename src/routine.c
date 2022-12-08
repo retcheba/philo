@@ -19,16 +19,16 @@ void	*routine_endless(void *arg)
 	thread = (t_thread *)arg;
 	while (1 == 1)
 	{
-		print_status(thread, "is thinking");
+		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
-			print_status(thread, "has taken a fork");
+			print_status(thread, "has taken a fork", 93);
 		if (pthread_mutex_lock(thread->right_fork) == 0)
-			print_status(thread, "has taken a fork");
-		print_status(thread, "is eating");
+			print_status(thread, "has taken a fork", 93);
+		print_status(thread, "is eating", 92);
 		usleep(1000 * thread->philo_struct->time_to_eat);
 		pthread_mutex_unlock(thread->left_fork);
 		pthread_mutex_unlock(thread->right_fork);
-		print_status(thread, "is sleeping");
+		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
 	}
 	return (NULL);
@@ -43,16 +43,16 @@ void	*routine_defined_end(void *arg)
 	i = 0;
 	while (i < thread->philo_struct->number_of_times_each_philosopher_must_eat)
 	{
-		print_status(thread, "is thinking");
+		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
-			print_status(thread, "has taken a fork");
+			print_status(thread, "has taken a fork", 93);
 		if (pthread_mutex_lock(thread->right_fork) == 0)
-			print_status(thread, "has taken a fork");
-		print_status(thread, "is eating");
+			print_status(thread, "has taken a fork", 93);
+		print_status(thread, "is eating", 92);
 		usleep(1000 * thread->philo_struct->time_to_eat);
 		pthread_mutex_unlock(thread->left_fork);
 		pthread_mutex_unlock(thread->right_fork);
-		print_status(thread, "is sleeping");
+		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
 		i++;
 	}

@@ -64,9 +64,22 @@ void	destroy_mutex(t_philo *philo)
 	pthread_mutex_destroy(&philo->printf);
 }
 
-void	print_status(t_thread *thread, char	*status)
+void	print_status(t_thread *thread, char	*status, int color)
 {
+	long long	time;
+
+	time = get_time() - thread->philo_struct->start_time;
 	if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
-		printf("Philo %d %s\n", thread->philo, status);
+		printf("\033[%dm%lld %d %s\n\033[0m", color, time, thread->philo, status);
 	pthread_mutex_unlock(&thread->philo_struct->printf);
+}
+
+long long	get_time(void)
+{
+	struct timeval	tv;
+	long long		time;
+
+	gettimeofday(&tv, NULL);
+	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	return (time);
 }

@@ -55,6 +55,7 @@ void	init_threads(t_philo *philo)
 	(void)philo;
 	th = malloc(sizeof(pthread_t) * philo->number_of_philosophers);
 	philo->threads = malloc(sizeof(t_thread) * philo->number_of_philosophers);
+	philo->start_time = get_time();
 	init_mutex(philo);
 	i = 0;
 	while (i < philo->number_of_philosophers)
