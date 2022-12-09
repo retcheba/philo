@@ -14,13 +14,11 @@
 
 int	is_a_dead_philo(t_thread *thread)
 {
-	if (pthread_mutex_lock(&thread->philo_struct->philo_death) == 0)
+	pthread_mutex_lock(&thread->philo_struct->philo_death);
+	if (thread->philo_struct->death == 1)
 	{
-		if (thread->philo_struct->death == 1)
-		{
-			pthread_mutex_unlock(&thread->philo_struct->philo_death);
-			return (1);
-		}
+		pthread_mutex_unlock(&thread->philo_struct->philo_death);
+		return (1);
 	}
 	pthread_mutex_unlock(&thread->philo_struct->philo_death);
 	return (0);
@@ -41,19 +39,15 @@ int	is_only_one_philo(t_thread *thread)
 
 static int	is_to_last(t_thread *thread, long long *time)
 {
-	if (pthread_mutex_lock(&thread->philo_struct->to_die_time) == 0)
+	pthread_mutex_lock(&thread->philo_struct->to_die_time);
+	pthread_mutex_lock(&thread->meal_last);
+	if (*time - thread->last_meal > thread->philo_struct->time_to_die)
 	{
-		if (pthread_mutex_lock(&thread->meal_last) == 0)
-		{
-			if (*time - thread->last_meal > thread->philo_struct->time_to_die)
-			{
-				pthread_mutex_unlock(&thread->meal_last);
-				pthread_mutex_unlock(&thread->philo_struct->to_die_time);
-				return (1);
-			}
-		}
 		pthread_mutex_unlock(&thread->meal_last);
+		pthread_mutex_unlock(&thread->philo_struct->to_die_time);
+		return (1);
 	}
+	pthread_mutex_unlock(&thread->meal_last);
 	pthread_mutex_unlock(&thread->philo_struct->to_die_time);
 	return (0);
 }
@@ -85,11 +79,9 @@ void	*check_death(void *arg)
 
 void	set_death(t_thread *thread, long long time)
 {
-	if (pthread_mutex_lock(&thread->philo_struct->philo_death) == 0)
-	{
+	pthread_mutex_lock(&thread->philo_struct->philo_death);
 		thread->philo_struct->death = 1;
 		thread->philo_struct->death_time = time;
 		thread->philo_struct->death_philo = thread->philo;
-	}
 	pthread_mutex_unlock(&thread->philo_struct->philo_death);
 }

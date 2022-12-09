@@ -86,7 +86,7 @@ long long	get_time(void)
 
 void	set_time(t_thread *thread, long long *time)
 {
-	if (pthread_mutex_lock(&thread->philo_struct->time_start) == 0)
-		*time = get_time() - thread->philo_struct->start_time;
+	pthread_mutex_lock(&thread->philo_struct->time_start);
+	*time = get_time() - thread->philo_struct->start_time;
 	pthread_mutex_unlock(&thread->philo_struct->time_start);
 }

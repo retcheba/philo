@@ -14,7 +14,7 @@
 
 static void	set_last_meal(t_thread *thread, long long time)
 {
-	if (pthread_mutex_lock(&thread->meal_last) == 0)
+	pthread_mutex_lock(&thread->meal_last);
 		thread->last_meal = time;
 	pthread_mutex_unlock(&thread->meal_last);
 }
@@ -29,9 +29,9 @@ void	print_status(t_thread *thread, char	*status, int color)
 		set_time(thread, &time);
 		if (color == 92)
 			set_last_meal(thread, time);
-		if (pthread_mutex_lock(&thread->philo_struct->printf) == 0)
-			printf("\033[%dm%lld %d %s\n\033[0m", color, time, thread->philo, \
-				status);
+		pthread_mutex_lock(&thread->philo_struct->printf);
+		printf("\033[%dm%lld %d %s\n\033[0m", color, time, thread->philo, \
+			status);
 		pthread_mutex_unlock(&thread->philo_struct->printf);
 	}
 }
