@@ -17,7 +17,9 @@ static int	is_only_one_philo(t_thread *thread)
 	if (thread->philo_struct->number_of_philosophers < 2)
 	{
 		print_status(thread, "is thinking", 95);
+		pthread_mutex_lock(thread->left_fork);
 		print_status(thread, "has taken a fork", 93);
+		pthread_mutex_unlock(thread->left_fork);
 		usleep(1000 * thread->philo_struct->time_to_die);
 		set_death(thread, get_time() - thread->philo_struct->start_time);
 		return (1);
