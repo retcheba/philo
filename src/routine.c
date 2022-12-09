@@ -17,6 +17,8 @@ void	*routine_endless(void *arg)
 	t_thread	*thread;
 
 	thread = (t_thread *)arg;
+	if (is_only_one_philo(thread))
+		return (NULL);
 	if (thread->philo % 2 == 0)
 		usleep(5000);
 	while (1 == 1)
@@ -24,8 +26,6 @@ void	*routine_endless(void *arg)
 		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
-		if (is_only_one_philo(thread))
-			break ;
 		if (pthread_mutex_lock(thread->right_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
 		print_status(thread, "is eating", 92);
@@ -71,6 +71,8 @@ void	*routine_defined_end(void *arg)
 	t_thread	*thread;
 
 	thread = (t_thread *)arg;
+	if (is_only_one_philo(thread))
+		return (NULL);
 	if (thread->philo % 2 == 0)
 		usleep(5000);
 	while (1 == 1)
@@ -78,8 +80,6 @@ void	*routine_defined_end(void *arg)
 		print_status(thread, "is thinking", 95);
 		if (pthread_mutex_lock(thread->left_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
-		if (is_only_one_philo(thread))
-			break ;
 		if (pthread_mutex_lock(thread->right_fork) == 0)
 			print_status(thread, "has taken a fork", 93);
 		print_status(thread, "is eating", 92);

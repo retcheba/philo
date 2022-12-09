@@ -39,7 +39,7 @@ static void	join_threads(t_philo *philo, pthread_t *th)
 	int	i;
 
 	i = 0;
-	while (i < philo->number_of_philosophers)
+	while (i < (philo->number_of_philosophers + 1))
 	{
 		if (pthread_join(th[i], NULL) != 0)
 			return ;
@@ -65,16 +65,20 @@ static void	init_philo(t_philo *philo)
 	pthread_t	*th;
 	int			i;
 
-	(void)philo;
-	th = malloc(sizeof(pthread_t) * philo->number_of_philosophers);
+	th = malloc(sizeof(pthread_t) * (philo->number_of_philosophers + 1));
 	philo->threads = malloc(sizeof(t_thread) * philo->number_of_philosophers);
 	philo->start_time = get_time();
 	init_mutex(philo);
 	i = 0;
-	while (i < philo->number_of_philosophers)
+	while (i < (philo->number_of_philosophers + 1))
 	{
-		init_threads(philo, i);
-		create_threads(philo, th, i);
+		if (i == philo->number_of_philosophers)
+			pthread_create(&th[i], NULL, &check_death, philo);
+		else
+		{
+			init_threads(philo, i);
+			create_threads(philo, th, i);
+		}
 		i++;
 	}
 	join_threads(philo, th);

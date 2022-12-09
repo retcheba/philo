@@ -45,6 +45,7 @@ void	init_mutex(t_philo *philo)
 	while (i < philo->number_of_philosophers)
 	{
 		pthread_mutex_init(&philo->forks[i], NULL);
+		pthread_mutex_init(&philo->threads[i].meal_last, NULL);
 		i++;
 	}
 	pthread_mutex_init(&philo->printf, NULL);
@@ -62,6 +63,7 @@ void	destroy_mutex(t_philo *philo)
 	while (i < philo->number_of_philosophers)
 	{
 		pthread_mutex_destroy(&philo->forks[i]);
+		pthread_mutex_destroy(&philo->threads[i].meal_last);
 		i++;
 	}
 	free(philo->forks);
@@ -80,4 +82,11 @@ long long	get_time(void)
 	gettimeofday(&tv, NULL);
 	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (time);
+}
+
+void	set_time(t_thread *thread, long long *time)
+{
+	if (pthread_mutex_lock(&thread->philo_struct->time_start) == 0)
+		*time = get_time() - thread->philo_struct->start_time;
+	pthread_mutex_unlock(&thread->philo_struct->time_start);
 }

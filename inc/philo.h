@@ -29,6 +29,7 @@ struct s_thread
 	long long		last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	meal_last;
 	t_philo			*philo_struct;
 };
 
@@ -61,8 +62,10 @@ void		print_status(t_thread *thread, char	*status, int color);
 int			is_a_dead_philo(t_thread *thread);
 int			is_only_one_philo(t_thread *thread);
 void		set_death(t_thread *thread, long long time);
+void		*check_death(void *arg);
 void		*routine_endless(void *arg);
 void		*routine_defined_end(void *arg);
 long long	get_time(void);
+void		set_time(t_thread *thread, long long *time);
 
 #endif
