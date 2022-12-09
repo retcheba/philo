@@ -62,7 +62,7 @@ void		print_status(t_thread *thread, char	*status, int color);
 int			is_a_dead_philo(t_thread *thread);
 void		set_death(t_thread *thread, long long time);
 void		print_death(t_philo *philo);
-void		*check_death(void *arg);
+void		*check_end(void *arg);
 void		*routine_endless(void *arg);
 void		*routine_defined_end(void *arg);
 long long	get_time(void);

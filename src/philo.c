@@ -58,7 +58,6 @@ static void	join_threads(t_philo *philo, pthread_t *th)
 			return ;
 		i++;
 	}
-	free(philo->threads);
 }
 
 static void	init_philo(t_philo *philo)
@@ -73,7 +72,7 @@ static void	init_philo(t_philo *philo)
 	while (i < (philo->number_of_philosophers + 1))
 	{
 		if (i == philo->number_of_philosophers)
-			pthread_create(&th[i], NULL, &check_death, philo);
+			pthread_create(&th[i], NULL, &check_end, philo);
 		else
 		{
 			init_threads(philo, i);
@@ -84,6 +83,7 @@ static void	init_philo(t_philo *philo)
 	join_threads(philo, th);
 	print_death(philo);
 	destroy_mutex(philo);
+	free(philo->threads);
 	free(th);
 }
 
