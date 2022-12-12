@@ -83,10 +83,10 @@ void	*routine_defined_end(void *arg)
 		pthread_mutex_lock(thread->right_fork);
 		print_status(thread, "has taken a fork", 93);
 		print_status(thread, "is eating", 92);
-		check_if_the_philo_is_fat(thread);
 		usleep(1000 * thread->philo_struct->time_to_eat);
 		pthread_mutex_unlock(thread->left_fork);
 		pthread_mutex_unlock(thread->right_fork);
+		check_if_the_philo_is_fat(thread);
 		print_status(thread, "is sleeping", 96);
 		usleep(1000 * thread->philo_struct->time_to_sleep);
 		if (is_a_dead_philo(thread))
